@@ -1,0 +1,6 @@
+export enum Type{
+    CDI = "CDI",
+    CDD = "CDD",
+    ACADEMY = "ACADEMY INTERNSHIP",
+    REMOTE = "REMOTE",
+    STAGE = "PROFESIONAL INTERNSHIP"}

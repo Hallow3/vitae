@@ -1,0 +1,507 @@
+<div class="container-fluid black-background">
+    <div class="container py-3" *ngIf="cv$ | async as cv">
+        <div class="row justify-content-center">
+            <div class="col-lg-2 col-md-12 mb-4">
+                <div class="sticky-top" style="top: 20px;">
+                    <div class="card accordion" id="accordionExample">
+                        <div class="card-body accordion-item">
+                            <div class="accordion-header" id="headingOne">
+                                <h5 class="card-title accordion-button" data-bs-toggle="collapse"
+                                    data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                    Options</h5>
+                            </div>
+                            <div class="accordion-collapse collapse show" id="collapseOne" aria-labelledby="headingOne"
+                                data-bs-parent="#accordionExample">
+                                <ul class="list-group list-group-flush accordion-body">
+                                    <li class="list-group-item">
+                                        <button class="btn s-text-colored btn-sm btn-block">Télécharger
+                                            image(JPG)</button>
+                                    </li>
+                                    <li class="list-group-item">
+                                        <button class="btn s-text-colored btn-sm btn-block">Télécharger PDF(A4)</button>
+                                    </li>
+                                    <li class="list-group-item">
+                                        <button class="btn s-text-colored btn-sm btn-block">Sauvegarder</button>
+                                    </li>
+                                    <li class="list-group-item">
+                                        <button class="btn s-text-colored btn-sm btn-block">Visualiser</button>
+                                    </li>
+                                    <li class="list-group-item">
+                                        <button class="btn s-text-colored btn-sm btn-block">Réinitialiser</button>
+                                    </li>
+                                    <li class="list-group-item">
+                                        <button class="btn text-danger btn-sm btn-block">Abandonner</button>
+                                    </li>
+                                    <li class="list-group-item">
+                                        <button class="btn s-text-colored btn-sm btn-block">Partager</button>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @if (cv.model.toString() == "SIMPLE WITH DESCRIPTION AND PROFILE") {
+            <div class="col-lg-10 col-md-12 mb-4">
+                <div class="bg-white shadow-lg p-3"
+                    style="max-width: 100%; width: 21cm; min-height: 29.7cm; margin: auto; border-left: 1px solid #007bff;">
+                    <div class="d-flex flex-column justify-content-between align-items-center mb-3 p-2"
+                        style="background-color: #e9ecef; border-radius: 5px;">
+                        <div class="d-flex flex-column align-items-center text-center mb-3">
+                            <div class="mb-3 d-flex justify-content-center align-items-center">
+                                <img src="{{cv.owner.profil}}" role="button"
+                                    (click)="pickImageFromStorage()" alt="Photo de profil" class="img-fluid"
+                                    style="width: 100px; height: 100px; border-radius: 50%;">
+                            </div>
+                            <div>
+                                <h1 class="text-dark mb-0 h3" contenteditable="true">{{cv.owner.firstName}} {{cv.owner.lastName}}</h1>
+                                <p class="text-muted mb-0" contenteditable="true">{{cv.owner.city}}</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <section class="mb-3 p-2" style="background-color: #f1f8ff; border-radius: 5px;">
+                        <div class="row">
+                            <div class="col-md-6 mb-2">
+                                <p class="mb-1" contenteditable="true"><i class="fas fa-envelope mr-2"></i>
+                                    {{cv.owner.email}}</p>
+                                <p class="mb-1" contenteditable="true"><i class="fas fa-phone mr-2"></i> {{cv.owner.phone}}</p>
+                            </div>
+                            <div class="col-md-6 mb-2">
+                                <p class="mb-1" contenteditable="true"><i class="fas fa-map-marker-alt mr-2"></i> {{cv.owner.address}}</p>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="mb-3">
+                        <h2 class="h5 text-dark border-bottom pb-1" contenteditable="true">Résumé Professionnel</h2>
+                        <p class="mb-2" contenteditable="true">{{cv.owner.about}}</p>
+                    </section>
+
+                    <section class="mb-3 p-2" style="background-color: #fff8f1; border-radius: 5px;">
+                        <h2 class="h5 text-dark border-bottom pb-1" contenteditable="true">Expérience Professionnelle
+                        </h2>
+                        <div class="mb-2" *ngFor="let expertize of cv.owner.expertize">
+                            <h5 class="h6 text-primary mb-1" contenteditable="true">{{expertize.name}}| {{expertize.compagny}}</h5>
+                            <p class="text-muted mb-1" contenteditable="true">{{expertize.startDate}}-{{expertize.endDate}}({{expertize.type}})</p>
+                            <ul class="pl-3 mb-2">
+                                <li contenteditable="true">{{expertize.description}}</li>
+                            </ul>
+                        </div>
+                    </section>
+
+                    <section class="mb-3">
+                        <h2 class="h5 text-dark border-bottom pb-1" contenteditable="true">Formation</h2>
+                        <div class="mb-2" *ngFor="let education of cv.owner.education">
+                            <h5 class="h6 text-primary mb-1" contenteditable="true">{{education.diploma}}</h5>
+                            <p class="text-muted mb-0" contenteditable="true">{{education.startDate}}-{{education.endDate}} | {{education.school}}</p>
+                        </div>
+                    </section>
+
+                    <section class="mb-3 p-2" style="background-color: #f0f8ff; border-radius: 5px;">
+                        <h2 class="h5 text-dark border-bottom pb-1" contenteditable="true">Compétences Techniques</h2>
+                        <div class="row">
+                            <div class="col-md-6 mb-2" *ngFor="let skill of cv.owner.skills">
+                                <p class="mb-1" contenteditable="true"><strong>{{skill.name}}</strong></p>
+                                <div class="progress">
+                                    <div [ngStyle]="{'width': skill.level+'%'}" class="progress-bar" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                                  </div>
+                            </div>
+                        </div>
+
+                    </section>
+
+                    <section>
+                        <h2 class="h5 text-dark border-bottom pb-1" contenteditable="true">Langues</h2>
+                        <p class="mb-0" contenteditable="true" *ngFor="let language of cv.owner.languages">{{language}}</p>
+                    </section>
+                </div>
+            </div>
+            }@else if (cv.model.toString() != "SIMPLE WITHOUT DESCRIPTION AND PROFILE") {
+            <div class="col-lg-10 col-md-12 mb-4">
+                <div class="bg-white shadow-lg p-3"
+                    style="max-width: 100%; width: 21cm; min-height: 29.7cm; margin: auto; border-left: 1px solid #007bff;">
+                    <div class="d-flex flex-column justify-content-between align-items-center mb-3 p-2"
+                        style="background-color: #e9ecef; border-radius: 5px;">
+                        <div class="d-flex flex-column align-items-center text-center mb-3">
+                            <div class="mb-3 d-flex justify-content-center align-items-center">
+                                <img src="{{cv.owner.profil}}" role="button"
+                                    (click)="pickImageFromStorage()" alt="Photo de profil" class="img-fluid"
+                                    style="width: 100px; height: 100px; border-radius: 50%;">
+                            </div>
+                            <div>
+                                <h1 class="text-dark mb-0 h3" contenteditable="true">{{cv.owner.firstName}} {{cv.owner.lastName}}</h1>
+                                <p class="text-muted mb-0" contenteditable="true">{{cv.owner.city}}</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <section class="mb-3 p-2" style="background-color: #f1f8ff; border-radius: 5px;">
+                        <div class="row">
+                            <div class="col-md-6 mb-2">
+                                <p class="mb-1" contenteditable="true"><i class="fas fa-envelope mr-2"></i>
+                                    {{cv.owner.email}}</p>
+                                <p class="mb-1" contenteditable="true"><i class="fas fa-phone mr-2"></i> {{cv.owner.phone}}</p>
+                            </div>
+                            <div class="col-md-6 mb-2">
+                                <p class="mb-1" contenteditable="true"><i class="fas fa-map-marker-alt mr-2"></i> {{cv.owner.address}}</p>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="mb-3">
+                        <h2 class="h5 text-dark border-bottom pb-1" contenteditable="true">Résumé Professionnel</h2>
+                        <p class="mb-2" contenteditable="true">{{cv.owner.about}}</p>
+                    </section>
+
+                    <section class="mb-3 p-2" style="background-color: #fff8f1; border-radius: 5px;">
+                        <h2 class="h5 text-dark border-bottom pb-1" contenteditable="true">Expérience Professionnelle
+                        </h2>
+                        <div class="mb-2" *ngFor="let expertize of cv.owner.expertize">
+                            <h5 class="h6 text-primary mb-1" contenteditable="true">{{expertize.name}}| {{expertize.compagny}}</h5>
+                            <p class="text-muted mb-1" contenteditable="true">{{expertize.startDate}}-{{expertize.endDate}}({{expertize.type}})</p>
+                            <ul class="pl-3 mb-2">
+                                <li contenteditable="true">{{expertize.description}}</li>
+                            </ul>
+                        </div>
+                    </section>
+
+                    <section class="mb-3">
+                        <h2 class="h5 text-dark border-bottom pb-1" contenteditable="true">Formation</h2>
+                        <div class="mb-2" *ngFor="let education of cv.owner.education">
+                            <h5 class="h6 text-primary mb-1" contenteditable="true">{{education.diploma}}</h5>
+                            <p class="text-muted mb-0" contenteditable="true">{{education.startDate}}-{{education.endDate}} | {{education.school}}</p>
+                        </div>
+                    </section>
+
+                    <section class="mb-3 p-2" style="background-color: #f0f8ff; border-radius: 5px;">
+                        <h2 class="h5 text-dark border-bottom pb-1" contenteditable="true">Compétences Techniques</h2>
+                        <div class="row">
+                            <div class="col-md-6 mb-2" *ngFor="let skill of cv.owner.skills">
+                                <p class="mb-1" contenteditable="true"><strong>{{skill.name}}</strong></p>
+                                <div class="progress">
+                                    <div [ngStyle]="{'width': skill.level+'%'}" class="progress-bar" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                                  </div>
+                            </div>
+                        </div>
+
+                    </section>
+
+                    <section>
+                        <h2 class="h5 text-dark border-bottom pb-1" contenteditable="true">Langues</h2>
+                        <p class="mb-0" contenteditable="true" *ngFor="let language of cv.owner.languages">{{language}}</p>
+                    </section>
+                </div>
+            </div>
+            }
+            @else if (cv.model.toString() != "SIMPLE WITHOUT DESCRIPTION") {
+            <div class="col-lg-10 col-md-12 mb-4">
+                <div class="bg-white shadow-lg p-3"
+                    style="max-width: 100%; width: 21cm; min-height: 29.7cm; margin: auto; border-left: 1px solid #007bff;">
+                    <div class="d-flex flex-column justify-content-between align-items-center mb-3 p-2"
+                        style="background-color: #e9ecef; border-radius: 5px;">
+                        <div class="d-flex flex-column align-items-center text-center mb-3">
+                            <div class="mb-3 d-flex justify-content-center align-items-center">
+                                <img src="{{cv.owner.profil}}" role="button"
+                                    (click)="pickImageFromStorage()" alt="Photo de profil" class="img-fluid"
+                                    style="width: 100px; height: 100px; border-radius: 50%;">
+                            </div>
+                            <div>
+                                <h1 class="text-dark mb-0 h3" contenteditable="true">{{cv.owner.firstName}} {{cv.owner.lastName}}</h1>
+                                <p class="text-muted mb-0" contenteditable="true">{{cv.owner.city}}</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <section class="mb-3 p-2" style="background-color: #f1f8ff; border-radius: 5px;">
+                        <div class="row">
+                            <div class="col-md-6 mb-2">
+                                <p class="mb-1" contenteditable="true"><i class="fas fa-envelope mr-2"></i>
+                                    {{cv.owner.email}}</p>
+                                <p class="mb-1" contenteditable="true"><i class="fas fa-phone mr-2"></i> {{cv.owner.phone}}</p>
+                            </div>
+                            <div class="col-md-6 mb-2">
+                                <p class="mb-1" contenteditable="true"><i class="fas fa-map-marker-alt mr-2"></i> {{cv.owner.address}}</p>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="mb-3">
+                        <h2 class="h5 text-dark border-bottom pb-1" contenteditable="true">Résumé Professionnel</h2>
+                        <p class="mb-2" contenteditable="true">{{cv.owner.about}}</p>
+                    </section>
+
+                    <section class="mb-3 p-2" style="background-color: #fff8f1; border-radius: 5px;">
+                        <h2 class="h5 text-dark border-bottom pb-1" contenteditable="true">Expérience Professionnelle
+                        </h2>
+                        <div class="mb-2" *ngFor="let expertize of cv.owner.expertize">
+                            <h5 class="h6 text-primary mb-1" contenteditable="true">{{expertize.name}}| {{expertize.compagny}}</h5>
+                            <p class="text-muted mb-1" contenteditable="true">{{expertize.startDate}}-{{expertize.endDate}}({{expertize.type}})</p>
+                            <ul class="pl-3 mb-2">
+                                <li contenteditable="true">{{expertize.description}}</li>
+                            </ul>
+                        </div>
+                    </section>
+
+                    <section class="mb-3">
+                        <h2 class="h5 text-dark border-bottom pb-1" contenteditable="true">Formation</h2>
+                        <div class="mb-2" *ngFor="let education of cv.owner.education">
+                            <h5 class="h6 text-primary mb-1" contenteditable="true">{{education.diploma}}</h5>
+                            <p class="text-muted mb-0" contenteditable="true">{{education.startDate}}-{{education.endDate}} | {{education.school}}</p>
+                        </div>
+                    </section>
+
+                    <section class="mb-3 p-2" style="background-color: #f0f8ff; border-radius: 5px;">
+                        <h2 class="h5 text-dark border-bottom pb-1" contenteditable="true">Compétences Techniques</h2>
+                        <div class="row">
+                            <div class="col-md-6 mb-2" *ngFor="let skill of cv.owner.skills">
+                                <p class="mb-1" contenteditable="true"><strong>{{skill.name}}</strong></p>
+                                <div class="progress">
+                                    <div [ngStyle]="{'width': skill.level+'%'}" class="progress-bar" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                                  </div>
+                            </div>
+                        </div>
+
+                    </section>
+
+                    <section>
+                        <h2 class="h5 text-dark border-bottom pb-1" contenteditable="true">Langues</h2>
+                        <p class="mb-0" contenteditable="true" *ngFor="let language of cv.owner.languages">{{language}}</p>
+                    </section>
+                </div>
+            </div>
+            }
+            @else if (cv.model.toString() != "SIMPLE WITH DESCRIPTION") {
+            <div class="col-lg-10 col-md-12 mb-4">
+                <div class="bg-white shadow-lg p-3"
+                    style="max-width: 100%; width: 21cm; min-height: 29.7cm; margin: auto; border-left: 1px solid #007bff;">
+                    <div class="d-flex flex-column justify-content-between align-items-center mb-3 p-2"
+                        style="background-color: #e9ecef; border-radius: 5px;">
+                        <div class="d-flex flex-column align-items-center text-center mb-3">
+                            <div class="mb-3 d-flex justify-content-center align-items-center">
+                                <img src="{{cv.owner.profil}}" role="button"
+                                    (click)="pickImageFromStorage()" alt="Photo de profil" class="img-fluid"
+                                    style="width: 100px; height: 100px; border-radius: 50%;">
+                            </div>
+                            <div>
+                                <h1 class="text-dark mb-0 h3" contenteditable="true">{{cv.owner.firstName}} {{cv.owner.lastName}}</h1>
+                                <p class="text-muted mb-0" contenteditable="true">{{cv.owner.city}}</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <section class="mb-3 p-2" style="background-color: #f1f8ff; border-radius: 5px;">
+                        <div class="row">
+                            <div class="col-md-6 mb-2">
+                                <p class="mb-1" contenteditable="true"><i class="fas fa-envelope mr-2"></i>
+                                    {{cv.owner.email}}</p>
+                                <p class="mb-1" contenteditable="true"><i class="fas fa-phone mr-2"></i> {{cv.owner.phone}}</p>
+                            </div>
+                            <div class="col-md-6 mb-2">
+                                <p class="mb-1" contenteditable="true"><i class="fas fa-map-marker-alt mr-2"></i> {{cv.owner.address}}</p>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="mb-3">
+                        <h2 class="h5 text-dark border-bottom pb-1" contenteditable="true">Résumé Professionnel</h2>
+                        <p class="mb-2" contenteditable="true">{{cv.owner.about}}</p>
+                    </section>
+
+                    <section class="mb-3 p-2" style="background-color: #fff8f1; border-radius: 5px;">
+                        <h2 class="h5 text-dark border-bottom pb-1" contenteditable="true">Expérience Professionnelle
+                        </h2>
+                        <div class="mb-2" *ngFor="let expertize of cv.owner.expertize">
+                            <h5 class="h6 text-primary mb-1" contenteditable="true">{{expertize.name}}| {{expertize.compagny}}</h5>
+                            <p class="text-muted mb-1" contenteditable="true">{{expertize.startDate}}-{{expertize.endDate}}({{expertize.type}})</p>
+                            <ul class="pl-3 mb-2">
+                                <li contenteditable="true">{{expertize.description}}</li>
+                            </ul>
+                        </div>
+                    </section>
+
+                    <section class="mb-3">
+                        <h2 class="h5 text-dark border-bottom pb-1" contenteditable="true">Formation</h2>
+                        <div class="mb-2" *ngFor="let education of cv.owner.education">
+                            <h5 class="h6 text-primary mb-1" contenteditable="true">{{education.diploma}}</h5>
+                            <p class="text-muted mb-0" contenteditable="true">{{education.startDate}}-{{education.endDate}} | {{education.school}}</p>
+                        </div>
+                    </section>
+
+                    <section class="mb-3 p-2" style="background-color: #f0f8ff; border-radius: 5px;">
+                        <h2 class="h5 text-dark border-bottom pb-1" contenteditable="true">Compétences Techniques</h2>
+                        <div class="row">
+                            <div class="col-md-6 mb-2" *ngFor="let skill of cv.owner.skills">
+                                <p class="mb-1" contenteditable="true"><strong>{{skill.name}}</strong></p>
+                                <div class="progress">
+                                    <div [ngStyle]="{'width': skill.level+'%'}" class="progress-bar" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                                  </div>
+                            </div>
+                        </div>
+
+                    </section>
+
+                    <section>
+                        <h2 class="h5 text-dark border-bottom pb-1" contenteditable="true">Langues</h2>
+                        <p class="mb-0" contenteditable="true" *ngFor="let language of cv.owner.languages">{{language}}</p>
+                    </section>
+                </div>
+            </div>
+            }
+            @else if (cv.model.toString() != "SIMPLE WITHOUT PROFILE") {
+            <div class="col-lg-10 col-md-12 mb-4">
+                <div class="bg-white shadow-lg p-3"
+                    style="max-width: 100%; width: 21cm; min-height: 29.7cm; margin: auto; border-left: 1px solid #007bff;">
+                    <div class="d-flex flex-column justify-content-between align-items-center mb-3 p-2"
+                        style="background-color: #e9ecef; border-radius: 5px;">
+                        <div class="d-flex flex-column align-items-center text-center mb-3">
+                            <div class="mb-3 d-flex justify-content-center align-items-center">
+                                <img src="{{cv.owner.profil}}" role="button"
+                                    (click)="pickImageFromStorage()" alt="Photo de profil" class="img-fluid"
+                                    style="width: 100px; height: 100px; border-radius: 50%;">
+                            </div>
+                            <div>
+                                <h1 class="text-dark mb-0 h3" contenteditable="true">{{cv.owner.firstName}} {{cv.owner.lastName}}</h1>
+                                <p class="text-muted mb-0" contenteditable="true">{{cv.owner.city}}</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <section class="mb-3 p-2" style="background-color: #f1f8ff; border-radius: 5px;">
+                        <div class="row">
+                            <div class="col-md-6 mb-2">
+                                <p class="mb-1" contenteditable="true"><i class="fas fa-envelope mr-2"></i>
+                                    {{cv.owner.email}}</p>
+                                <p class="mb-1" contenteditable="true"><i class="fas fa-phone mr-2"></i> {{cv.owner.phone}}</p>
+                            </div>
+                            <div class="col-md-6 mb-2">
+                                <p class="mb-1" contenteditable="true"><i class="fas fa-map-marker-alt mr-2"></i> {{cv.owner.address}}</p>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="mb-3">
+                        <h2 class="h5 text-dark border-bottom pb-1" contenteditable="true">Résumé Professionnel</h2>
+                        <p class="mb-2" contenteditable="true">{{cv.owner.about}}</p>
+                    </section>
+
+                    <section class="mb-3 p-2" style="background-color: #fff8f1; border-radius: 5px;">
+                        <h2 class="h5 text-dark border-bottom pb-1" contenteditable="true">Expérience Professionnelle
+                        </h2>
+                        <div class="mb-2" *ngFor="let expertize of cv.owner.expertize">
+                            <h5 class="h6 text-primary mb-1" contenteditable="true">{{expertize.name}}| {{expertize.compagny}}</h5>
+                            <p class="text-muted mb-1" contenteditable="true">{{expertize.startDate}}-{{expertize.endDate}}({{expertize.type}})</p>
+                            <ul class="pl-3 mb-2">
+                                <li contenteditable="true">{{expertize.description}}</li>
+                            </ul>
+                        </div>
+                    </section>
+
+                    <section class="mb-3">
+                        <h2 class="h5 text-dark border-bottom pb-1" contenteditable="true">Formation</h2>
+                        <div class="mb-2" *ngFor="let education of cv.owner.education">
+                            <h5 class="h6 text-primary mb-1" contenteditable="true">{{education.diploma}}</h5>
+                            <p class="text-muted mb-0" contenteditable="true">{{education.startDate}}-{{education.endDate}} | {{education.school}}</p>
+                        </div>
+                    </section>
+
+                    <section class="mb-3 p-2" style="background-color: #f0f8ff; border-radius: 5px;">
+                        <h2 class="h5 text-dark border-bottom pb-1" contenteditable="true">Compétences Techniques</h2>
+                        <div class="row">
+                            <div class="col-md-6 mb-2" *ngFor="let skill of cv.owner.skills">
+                                <p class="mb-1" contenteditable="true"><strong>{{skill.name}}</strong></p>
+                                <div class="progress">
+                                    <div [ngStyle]="{'width': skill.level+'%'}" class="progress-bar" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                                  </div>
+                            </div>
+                        </div>
+
+                    </section>
+
+                    <section>
+                        <h2 class="h5 text-dark border-bottom pb-1" contenteditable="true">Langues</h2>
+                        <p class="mb-0" contenteditable="true" *ngFor="let language of cv.owner.languages">{{language}}</p>
+                    </section>
+                </div>
+            </div>
+            }
+            @else if (cv.model.toString() != "SIMPLE WITH PROFILE") {
+            <div class="col-lg-10 col-md-12 mb-4">
+                <div class="bg-white shadow-lg p-3"
+                    style="max-width: 100%; width: 21cm; min-height: 29.7cm; margin: auto; border-left: 1px solid #007bff;">
+                    <div class="d-flex flex-column justify-content-between align-items-center mb-3 p-2"
+                        style="background-color: #e9ecef; border-radius: 5px;">
+                        <div class="d-flex flex-column align-items-center text-center mb-3">
+                            <div class="mb-3 d-flex justify-content-center align-items-center">
+                                <img src="{{cv.owner.profil}}" role="button"
+                                    (click)="pickImageFromStorage()" alt="Photo de profil" class="img-fluid"
+                                    style="width: 100px; height: 100px; border-radius: 50%;">
+                            </div>
+                            <div>
+                                <h1 class="text-dark mb-0 h3" contenteditable="true">{{cv.owner.firstName}} {{cv.owner.lastName}}</h1>
+                                <p class="text-muted mb-0" contenteditable="true">{{cv.owner.city}}</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <section class="mb-3 p-2" style="background-color: #f1f8ff; border-radius: 5px;">
+                        <div class="row">
+                            <div class="col-md-6 mb-2">
+                                <p class="mb-1" contenteditable="true"><i class="fas fa-envelope mr-2"></i>
+                                    {{cv.owner.email}}</p>
+                                <p class="mb-1" contenteditable="true"><i class="fas fa-phone mr-2"></i> {{cv.owner.phone}}</p>
+                            </div>
+                            <div class="col-md-6 mb-2">
+                                <p class="mb-1" contenteditable="true"><i class="fas fa-map-marker-alt mr-2"></i> {{cv.owner.address}}</p>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="mb-3">
+                        <h2 class="h5 text-dark border-bottom pb-1" contenteditable="true">Résumé Professionnel</h2>
+                        <p class="mb-2" contenteditable="true">{{cv.owner.about}}</p>
+                    </section>
+
+                    <section class="mb-3 p-2" style="background-color: #fff8f1; border-radius: 5px;">
+                        <h2 class="h5 text-dark border-bottom pb-1" contenteditable="true">Expérience Professionnelle
+                        </h2>
+                        <div class="mb-2" *ngFor="let expertize of cv.owner.expertize">
+                            <h5 class="h6 text-primary mb-1" contenteditable="true">{{expertize.name}}| {{expertize.compagny}}</h5>
+                            <p class="text-muted mb-1" contenteditable="true">{{expertize.startDate}}-{{expertize.endDate}}({{expertize.type}})</p>
+                            <ul class="pl-3 mb-2">
+                                <li contenteditable="true">{{expertize.description}}</li>
+                            </ul>
+                        </div>
+                    </section>
+
+                    <section class="mb-3">
+                        <h2 class="h5 text-dark border-bottom pb-1" contenteditable="true">Formation</h2>
+                        <div class="mb-2" *ngFor="let education of cv.owner.education">
+                            <h5 class="h6 text-primary mb-1" contenteditable="true">{{education.diploma}}</h5>
+                            <p class="text-muted mb-0" contenteditable="true">{{education.startDate}}-{{education.endDate}} | {{education.school}}</p>
+                        </div>
+                    </section>
+
+                    <section class="mb-3 p-2" style="background-color: #f0f8ff; border-radius: 5px;">
+                        <h2 class="h5 text-dark border-bottom pb-1" contenteditable="true">Compétences Techniques</h2>
+                        <div class="row">
+                            <div class="col-md-6 mb-2" *ngFor="let skill of cv.owner.skills">
+                                <p class="mb-1" contenteditable="true"><strong>{{skill.name}}</strong></p>
+                                <div class="progress">
+                                    <div [ngStyle]="{'width': skill.level+'%'}" class="progress-bar" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                                  </div>
+                            </div>
+                        </div>
+
+                    </section>
+
+                    <section>
+                        <h2 class="h5 text-dark border-bottom pb-1" contenteditable="true">Langues</h2>
+                        <p class="mb-0" contenteditable="true" *ngFor="let language of cv.owner.languages">{{language}}</p>
+                    </section>
+                </div>
+            </div>
+            }
+        </div>
+    </div>
+</div>
